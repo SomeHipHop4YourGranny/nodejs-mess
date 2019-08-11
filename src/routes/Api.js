@@ -1,48 +1,58 @@
-import express from 'express'
-import { httpErrorCreater } from '../utils'
+import express from "express";
+import { httpErrorCreater } from "../utils";
 import {
   DialogController,
   AuthController,
   MessageController,
-  UserController
-} from '../controllers'
+  UserController,
+} from "../controllers";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/session', (req, res, next) =>
+router.get("/session", (req, res, next) =>
   req.session.passport
     ? res.status(200).send(req.session.passport)
     : next(httpErrorCreater({ status: 401 }))
-)
+);
 
 // User Routes
-router.get('/users', UserController.index)
-router.get('/users/:userId', UserController.read)
-router.delete('/users/:userId', UserController.deleteOne)
+router.get("/users", UserController.index);
+router.get("/users/find/:username", UserController.find);
+router.get("/users/:userId", UserController.read);
+router.put("/users/:userId", UserController.update);
+router.delete("/users/:userId", UserController.deleteOne);
 
 // Dialog Routes
-router.get('/users/:userId/dialogs', DialogController.index)
-router.get('/users/:userId/dialogs/:dialogId', DialogController.read)
-router.delete('/users/:userId/dialogs/:dialogId', DialogController.deleteOne)
-router.post('/users/:userId/dialogs', DialogController.create)
+router.get("/users/:userId/dialogs", DialogController.index);
+router.get("/users/:userId/dialogs/:dialogId", DialogController.read);
+router.delete("/users/:userId/dialogs/:dialogId", DialogController.deleteOne);
+router.post("/users/:userId/dialogs", DialogController.create);
+router.put("/users/:userId/dialogs/:dialogId", DialogController.update);
 
 // Message Routes
-router.get('/users/:userId/dialogs/:dialogId/messages', MessageController.index)
 router.get(
-  '/users/:userId/dialogs/:dialogId/messages/:messageId',
+  "/users/:userId/dialogs/:dialogId/messages",
+  MessageController.index
+);
+router.get(
+  "/users/:userId/dialogs/:dialogId/messages/:messageId",
   MessageController.read
-)
+);
 router.delete(
-  '/users/:userId/dialogs/:dialogId/messages/:messageId',
+  "/users/:userId/dialogs/:dialogId/messages/:messageId",
   MessageController.deleteOne
-)
+);
 router.post(
-  '/users/:userId/dialogs/:dialogId/messages',
+  "/users/:userId/dialogs/:dialogId/messages",
   MessageController.create
-)
+);
+router.put(
+  "/users/:userId/dialogs/:dialogId/messages/:messageId",
+  MessageController.update
+);
 
 // Login and Register
-router.post('/login', AuthController.signIn)
-router.post('/register', AuthController.signUp)
+router.post("/login", AuthController.signIn);
+router.post("/register", AuthController.signUp);
 
-export default router
+export default router;

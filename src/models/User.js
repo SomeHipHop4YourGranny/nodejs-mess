@@ -23,7 +23,7 @@ const schema = new Schema(
     },
     avatar: {
       type: String,
-      default: "https://source.unsplash.com/random",
+      default: "https://source.unsplash.com/1600x900/?people",
     },
     last_seen: {
       type: Date,
